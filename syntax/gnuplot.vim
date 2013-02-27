@@ -11,6 +11,7 @@ if version < 600
 elseif exists("b:current_syntax")
   finish
 endif
+setlocal commentstring=#\ %s
 
 " --- Statement ---
 syn keyword plotStmt cd call clear exit fit if help history load
