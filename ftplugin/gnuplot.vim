@@ -70,6 +70,8 @@ ruby << EOR
 EOR
 endfunction
 
+setlocal commentstring=#\ %s
+
 if has('ruby')
   call GnuplotInit()
   ", $curbuf.line_number
