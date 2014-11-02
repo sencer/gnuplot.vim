@@ -18,12 +18,12 @@ probably not working for many corner cases. What it does is:
 This fork also sets `commentstring` for the gnuplot.
 
 This is a simple plugin, just sends the lines to Gnuplot as is. This has some
-shortcomings, for example: Assume you have a line like `set label "x" at 0, 0`
-that is already plotted. If you change this line to `set label "x" at 1, 1` and
-re-send to Gnuplot, it will not change the label but add a new label just like
-it would do in a Gnuplot session. To avoid this kind of behavior I suggest
-always giving and id to labels, arrows and objects (e.g. `set label 1 "x" at 1,
-1`).
+shortcomings, for example: Assume you have  `set label "x" at 0, 0` line, that
+is already plotted. If you change this line to `set label "x" at 1, 1` and
+re-send to Gnuplot, it will not update the label position but add a new label
+--just like it would do in a Gnuplot session. To avoid this kind of behavior I
+suggest always giving an id to labels, arrows and objects (e.g. `set label 1
+"x" at 1, 1`).
 
 How to Install
 ==============
