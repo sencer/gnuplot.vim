@@ -11,10 +11,10 @@ probably not working for many corner cases. What it does is:
   * `.replot` to replot
   * `.err` to return the output of last gnuplot command
   * `.last` to return the last command issued to gnuplot
-- Maps <Space> in Visual and Normal mode to send line/range to Gnuplot.
-- Maps [g and ]g in Normal mode to move to previous/next plot in Multiplot mode.
+- Maps `<Space>` in Visual and Normal mode to send line/range to Gnuplot.
+- Maps `[g` and `]g` in Normal mode to move to previous/next plot in Multiplot mode.
 
-This fork also sets commentstring for the gnuplot.
+This fork also sets `commentstring` for the gnuplot.
 
 How to Install
 ==============
