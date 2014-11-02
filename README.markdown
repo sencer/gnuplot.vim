@@ -1,18 +1,22 @@
 gnuplot.vim
 ===========
 
-Intro
------
+This is a fork of [vlaadbrain/gnuplot](https://github.com/vlaadbrain/gnuplot.vim)
+for gnuplot syntax highlighting. I added some Ruby code to enable interaction
+with a gnuplot session running in the background. Code is highly untested and
+probably not working for many corner cases. What it does is:
 
-This is a mirror of [vim-scripts](http://www.vim.org/scripts/script.php?script_id=1737)
-adapted for [pathogen.vim](https://github.com/tpope/vim-pathogen) as a bundle
+- Creates a `$gnuplot` Ruby global variable, which has methods:
+  * `.exec(cmd)`to execute a gnuplot command
+  * `.replot` to replot
+  * `.err` to return the output of last gnuplot command
+  * `.last` to return the last command issued to gnuplot
+- Maps <Space> in Visual and Normal mode to send line/range to Gnuplot.
+- Maps [g and ]g in Normal mode to move to previous/next plot in Multiplot mode.
 
-the gnuplot .plt extension sets the filetype to gnuplot
+This fork also sets commentstring for the gnuplot.
 
-Installation
-------------
+How to Install
+==============
 
-[pathogen.vim](https://github.com/tpope/vim-pathogen) is the recommended way to install vim-gnuplot.
-
-    cd ~/.vim/bundle
-    git clone https://github.com/vlaadbrain/vim-gnuplot.git
+I suggest using [junegunn/vim-plug](https://github.com/junegunn/vim-plug).
