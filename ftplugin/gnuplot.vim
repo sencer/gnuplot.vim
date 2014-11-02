@@ -5,32 +5,17 @@ ruby << EOR
 
   class Gnuplot
 
-    attr_accessor :str, :plot, :last, :label, :arrow, :object
+    attr_reader :last # , :plot, :label, :arrow, :object
 
     def initialize
       @in, @out, @pid = PTY.spawn 'gnuplot --persist'
-      getstr       # dump header etc
-      @str = []    #
-      @label = []
-      @arrow = []
-      @obj = []
+      geterr       # dump header etc
+      @err = []    #
+      # @label = []
+      # @arrow = []
+      # @obj = []
       @cmd = ""
       @plot = false
-    end
-
-    def exec_line cmd #, ln = 0
-      #cmd.strip!
-      if cmd.end_with? '\\'
-        @cmd += cmd.chop
-      else
-        @last = "#{@cmd} #{cmd}".strip
-        @out.puts @last
-        @last =~ /^(s?plot|set multiplot)/ ? @plot = true : (@plot && replot)
-        # @last = create_id(@last) if @last =~ /set (arrow|label|obj) \D/
-        @cmd = ""
-        getstr
-        "#{@last}#{(': '+@str.join(' ')) if @str.length > 0}"
-      end
     end
 
     def replot
@@ -38,8 +23,29 @@ ruby << EOR
     end
 
     def exec cmd
+      @last = cmd
       @out.puts cmd
     end
+
+    def exec_line cmd #, ln = 0
+      if cmd.end_with? '\\'
+        @cmd += cmd.strip.chop
+      else
+        @last = "#{@cmd} #{cmd}".strip
+        @out.puts @last
+        @last =~ /^(s?plot|set multiplot)/ ? @plot = true : (@plot && replot)
+        # @last = create_id(@last) if @last =~ /set (arrow|label|obj) \D/
+        @cmd = ""
+        geterr
+      end
+      err
+    end
+
+    def err
+        @err.join(' ') if @err.length > 0
+    end
+
+private
 
     # def create_id text, ln = 0
     #   case text
@@ -56,16 +62,17 @@ ruby << EOR
     #   text
     # end
 
-    def getstr
-      @str = @in.expect(/.*plot>/)
+    def geterr
+      @err = @in.expect(/.*plot>/)
         .map{|v| v.split("\r\n")}
         .flatten
         .map(&:strip)
-      @str.pop
-      @str.shift
-      @str.delete_if{|v| v == '^' || v == ''}
+      @err.pop
+      @err.shift
+      @err.delete_if{|v| v == '^' || v == ''}
     end
   end
+
   $gnuplot = Gnuplot.new()
 EOR
 endfunction
@@ -76,7 +83,7 @@ if has('ruby')
   call GnuplotInit()
   ", $curbuf.line_number
   nnoremap <buffer> <Space> :ruby print $gnuplot.exec_line($curbuf.line)<CR>j
-  vnoremap <buffer> <Space> :rubydo print $gnuplot.exec_line($_)<CR>
+  vnoremap <buffer> <Space> :rubydo $gnuplot.exec_line($_)<CR>:ruby print $gnuplot.err<CR>
   nnoremap ]g :ruby print $gnuplot.exec('set multiplot next')<CR>
   nnoremap [g :ruby print $gnuplot.exec('set multiplot prev')<CR>
 endif
