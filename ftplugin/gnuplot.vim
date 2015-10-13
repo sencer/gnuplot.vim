@@ -82,8 +82,8 @@ setlocal commentstring=#\ %s
 if has('ruby')
   call GnuplotInit()
   ", $curbuf.line_number
-  nnoremap <buffer> <Space> :ruby print $gnuplot.exec_line($curbuf.line)<CR>j
-  vnoremap <buffer> <Space> :rubydo $gnuplot.exec_line($_)<CR>:ruby print $gnuplot.err<CR>
+  nnoremap <buffer> Q :ruby print $gnuplot.exec_line($curbuf.line)<CR>j
+  vnoremap <buffer> Q :rubydo $gnuplot.exec_line($_)<CR>:ruby print $gnuplot.err<CR>
   nnoremap ]g :ruby print $gnuplot.exec('set multiplot next')<CR>
   nnoremap [g :ruby print $gnuplot.exec('set multiplot prev')<CR>
 endif
