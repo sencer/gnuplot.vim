@@ -78,6 +78,7 @@ EOR
 endfunction
 
 setlocal commentstring=#\ %s
+setlocal makeprg=gnuplot\ %
 
 if has('ruby')
   call GnuplotInit()
